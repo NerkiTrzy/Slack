@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slack", "Slack\Slack.csproj", "{5491C82B-676F-4E04-84B4-5C962CA58D18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slack", "Slack\Slack.csproj", "{B4BBE640-ABA4-4B83-A858-74319D8B2215}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{31377ED8-BD13-4672-9ABD-8E57F04754A7}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{136CC54B-3393-434E-818E-CD1FD8E5E0A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5491C82B-676F-4E04-84B4-5C962CA58D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5491C82B-676F-4E04-84B4-5C962CA58D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5491C82B-676F-4E04-84B4-5C962CA58D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5491C82B-676F-4E04-84B4-5C962CA58D18}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31377ED8-BD13-4672-9ABD-8E57F04754A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31377ED8-BD13-4672-9ABD-8E57F04754A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31377ED8-BD13-4672-9ABD-8E57F04754A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31377ED8-BD13-4672-9ABD-8E57F04754A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4BBE640-ABA4-4B83-A858-74319D8B2215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4BBE640-ABA4-4B83-A858-74319D8B2215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4BBE640-ABA4-4B83-A858-74319D8B2215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4BBE640-ABA4-4B83-A858-74319D8B2215}.Release|Any CPU.Build.0 = Release|Any CPU
+		{136CC54B-3393-434E-818E-CD1FD8E5E0A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{136CC54B-3393-434E-818E-CD1FD8E5E0A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{136CC54B-3393-434E-818E-CD1FD8E5E0A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{136CC54B-3393-434E-818E-CD1FD8E5E0A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {862AA257-A59B-418E-9042-E968F766156E}
+		SolutionGuid = {3B2D3DBA-BCCD-446A-AF56-6F88E90140D0}
 	EndGlobalSection
 EndGlobal

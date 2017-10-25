@@ -3,9 +3,9 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.0</ProjectVersion>
     <DockerTargetOS>Windows</DockerTargetOS>
-    <ProjectGuid>31377ed8-bd13-4672-9abd-8e57f04754a7</ProjectGuid>
+    <ProjectGuid>136cc54b-3393-434e-818e-cd1fd8e5e0a6</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
-    <DockerServiceUrl>http://{ServiceIPAddress}</DockerServiceUrl>
+    <DockerServiceUrl>http://{ServiceIPAddress}/https://localhost:44333/</DockerServiceUrl>
     <DockerServiceName>slack</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
