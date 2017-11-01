@@ -56,6 +56,10 @@ namespace Slack.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
+            if(string.IsNullOrEmpty(returnUrl))
+            {
+                returnUrl = "/Workspaces";
+            }
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {

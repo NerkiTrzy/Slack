@@ -2,8 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <UserSecretsId>aspnet-Slack-A24BF274-2AD6-4851-B919-DD9534C4EBB3</UserSecretsId>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>aspnet-Slack-3EDAE9A8-A55E-4330-BDD8-2350EED0AE50</UserSecretsId>
   </PropertyGroup>
 
 

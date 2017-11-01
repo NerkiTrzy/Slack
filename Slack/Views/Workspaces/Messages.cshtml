@@ -1,0 +1,20 @@
+﻿@model Slack.Models.Workspace
+@{
+    ViewData["Title"] = Model.Name;
+}
+<div>
+    <h4>Welcome to @Model.Name workspace</h4>
+    <hr />
+    ------workspace content------
+</div>
+<br />
+<div>
+    Users list:
+    @foreach (var item in Model.WorkspaceMemberships)
+    {
+        <p>@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</p>
+    }
+
+    <p><a asp-action="InviteUser" asp-route-id="@Model.Name">Invite User</a></p>
+    
+</div>

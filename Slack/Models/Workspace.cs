@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace Slack.Models
 {
-    // Add profile data for application users by adding properties to the ApplicationUser class
-    public class ApplicationUser : IdentityUser
+    public class Workspace
     {
+        public int ID { get; set; }
+        public string OwnerID { get; set; }
+        public string Name { get; set; }
         public ICollection<WorkspaceMembership> WorkspaceMemberships { get; set; }
     }
 }
