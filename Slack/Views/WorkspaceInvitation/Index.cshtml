@@ -1,0 +1,10 @@
+﻿@model Slack.Models.WorkspaceInvitation
+
+
+<br />
+<p>Do you want to join @Model.WorkspaceName workspace?</p>
+<form action="" method="post">
+    <input type="hidden" value=@Model.InvitationGUID name="guid"/>
+    <input type="submit" value="Yes" formaction="WorkspaceInvitation/Accept" />
+    <input type="submit" value="No" formaction="WorkspaceInvitation/Decline" />
+</form>

@@ -210,9 +210,10 @@ namespace Slack.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult Register(string returnUrl = null, string email = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            ViewData["Email"] = email;
             return View();
         }
 

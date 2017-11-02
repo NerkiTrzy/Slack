@@ -259,14 +259,15 @@ namespace Slack.Controllers
 
             if (ModelState.IsValid)
             {
-                //@TODO
-                //add invitation link and create entry in database
+
+                Guid guid = Guid.NewGuid();
 
                 var message = new MailMessage();
                 message.To.Add(new MailAddress(model.EmailAddress)); 
                 message.From = new MailAddress("199844bd68-7b4c7c@inbox.mailtrap.io");
                 message.Subject = "SLACK Invitation";
-                message.Body = $"{model.InviterName} has invited you to join {model.WorkspaceName} on SLACK.";
+                message.Body = $"<p>{model.InviterName} has invited you to join {model.WorkspaceName} on SLACK.</p>";
+                message.Body += $"<a href=\"https://localhost:44320/WorkspaceInvitation?id={guid}\">https://localhost:44320/WorkspaceInvitation?id={guid}</a>";
                 message.IsBodyHtml = true;
 
                 using (var smtp = new SmtpClient())
@@ -281,6 +282,12 @@ namespace Slack.Controllers
                     smtp.Port = 25;
                     smtp.EnableSsl = true;
                     await smtp.SendMailAsync(message);
+
+                    //add to database
+                    _context.Add(new WorkspaceInvitation { WorkspaceName = model.WorkspaceName, UserEmailAddress = model.EmailAddress,
+                        InvitationGUID = guid, StartDate = DateTime.Now });
+                    await _context.SaveChangesAsync();
+
                     return RedirectToAction("Messages/" + model.WorkspaceName, "Workspaces");
                 }
             }
