@@ -1,20 +1,43 @@
 ﻿@model Slack.Models.Workspace
 @{
-    ViewData["Title"] = Model.Name;
+        ViewData["Title"] = Model.Name;
 }
-<div>
-    <h4>Welcome to @Model.Name workspace</h4>
-    <hr />
-    ------workspace content------
-</div>
 <br />
-<div>
-    Users list:
-    @foreach (var item in Model.WorkspaceMemberships)
-    {
-        <p>@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</p>
-    }
+<div class="container">
+    <div class="column-workspace">
+        Workspaces:
+        <ul>
+            <li>@Html.DisplayFor(modelItem => Model.Name)</li>
+        </ul>
+    </div>
+    <div class="column-channel">
+        Channels:
+        <div>
+            Users list:
+            @foreach (var item in Model.WorkspaceMemberships)
+            {
+                <p>@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</p>
+            }
+            <p><a asp-action="InviteUser" asp-route-id="@Model.Name">Invite User</a></p>
 
-    <p><a asp-action="InviteUser" asp-route-id="@Model.Name">Invite User</a></p>
-    
+        </div>
+    </div>
+    <div class="column-chat">
+        Chat
+        <div class="chatContainer">
+            <div class="chatHeader">
+                <h2>Welcome to @Model.Name workspace</h2>
+            </div>
+            <div class="chatMessages"></div>
+            <div class="classBottom">
+                <form action="#" onsubmit="return false;" id="chat">
+                    <input type="hidden" id="name" />
+                    <input type="text" id="message_text" value='' placeholder="Message: #@Model.Name" />
+                    <input type="submit" name="message_submit" value="Post" />
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+
