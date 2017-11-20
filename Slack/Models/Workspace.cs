@@ -11,5 +11,6 @@ namespace Slack.Models
         public string OwnerID { get; set; }
         public string Name { get; set; }
         public ICollection<WorkspaceMembership> WorkspaceMemberships { get; set; }
+        public ICollection<Channel> Channels { get; set; }
     }
 }

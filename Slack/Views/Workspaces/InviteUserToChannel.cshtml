@@ -1,0 +1,43 @@
+﻿@model Slack.Models.WorkspaceViewModels.ChannelInviteViewModel
+<div id="inviteUserToChannelOverlay" class="overlay">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeInviteUserToChannelOverlay()">&times;</a>
+    <div class="overlayContent">
+        <h4>Invite user to # @Model.ChannelName</h4>
+        <form asp-controller="Channels" asp-action="InviteUser" data-ajax="true" data-ajax-method="POST" data-ajax-success="channelInvitationResponseSuccess">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="InvitedUserName" class="control-label"></label>
+                <input asp-for="InvitedUserName" id="invitedUserNameInput" class="form-control" required />
+                <input asp-for="WorkspaceName" value=@Model.WorkspaceName type="hidden" />
+                <input asp-for="ChannelName" value=@Model.ChannelName type="hidden" />
+            </div>
+            <div id="inviteUserToChannelResult"></div>
+
+            <div class="form-group">
+                <input type="submit" value="Invite User" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var channelInvitationResponseSuccess = function (response) {
+        $('#invitedUserNameInput').val("");
+        if (response.result == 'Redirect') {
+            window.location = response.url;
+        }
+        else {
+            $('#inviteUserToChannelResult').text(response.result);
+        }
+
+    }
+    function showInviteUserToChannelOverlay() {
+        $("#inviteUserToChannelOverlay").show();
+    }
+
+    function closeInviteUserToChannelOverlay() {
+        $("#inviteUserToChannelOverlay").hide();
+        $('#inviteUserToChannelResult').text("");
+        $('#invitedUserNameInput').val("");
+    }
+</script>

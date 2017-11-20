@@ -93,63 +93,15 @@ namespace Slack.Controllers
             if (ModelState.IsValid)
             {
                 var workspace = new Workspace { Name = model.Name, OwnerID = _userManager.GetUserId(HttpContext.User) };
+                var channel = new Channel { Name = "general", OwnerID = _userManager.GetUserId(HttpContext.User), Type = Channel.ChannelType.Public, General = true, Workspace = workspace };
                 _context.Add(workspace);
+                _context.Add(channel);
                 _context.Add(new WorkspaceMembership { WorkspaceID = workspace.ID, JoinDate = DateTime.Now, ApplicationUserID = workspace.OwnerID });
+                _context.Add(new ChannelMembership { ChannelID = channel.ID, JoinDate = DateTime.Now, ApplicationUserID = workspace.OwnerID });
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
-        }
-
-        // GET: Workspaces/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var workspace = await _context.Workspace.SingleOrDefaultAsync(m => m.ID == id);
-            if (workspace == null)
-            {
-                return NotFound();
-            }
-            return View(workspace);
-        }
-
-        // POST: Workspaces/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,OwnerID,Name")] Workspace workspace)
-        {
-            if (id != workspace.ID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(workspace);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!WorkspaceExists(workspace.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(workspace);
         }
 
         // GET: Workspaces/Delete/5
@@ -187,18 +139,21 @@ namespace Slack.Controllers
         }
 
 
-        // GET: Workspaces/Messages/WorkspaceName
-        public async Task<IActionResult> Messages(string id)
+        // GET: Workspaces/Messages/WorkspaceName/ChannelName
+        public async Task<IActionResult> Messages(string id, string channel)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(channel))
             {
                 return NotFound();
             }
-            var workspace = await _context.Workspace.Include(ws => ws.WorkspaceMemberships).ThenInclude(wm => wm.ApplicationUser)
+            var workspace = await _context.Workspace.Include(ws => ws.WorkspaceMemberships).ThenInclude(wm => wm.ApplicationUser).Include(c => c.Channels).ThenInclude(chm => chm.ChannelMemberships)
                 .SingleOrDefaultAsync(w => w.Name == id);
             var workspaceMembership = await _context.WorkspaceMembership
                 .SingleOrDefaultAsync(m => m.WorkspaceID == workspace.ID && m.ApplicationUserID == _userManager.GetUserId(HttpContext.User));
-
+            var currentChannel = await _context.Channel.Include(c => c.ChannelMemberships).ThenInclude(chm => chm.ApplicationUser)
+                .SingleOrDefaultAsync(c => c.Name == channel && c.Workspace == workspace);
+            var channelMembership = await _context.ChannelMembership.
+                SingleOrDefaultAsync(chm => chm.ChannelID == currentChannel.ID && chm.ApplicationUserID == _userManager.GetUserId(HttpContext.User));
             if (workspace == null)
             {
                 return NotFound();
@@ -207,8 +162,27 @@ namespace Slack.Controllers
             {
                 return RedirectToAction("WorkspaceAccessDenied", "Workspaces");
             }
+            if (channelMembership == null)
+            {
+                return RedirectToAction("WorkspaceAccessDenied", "Workspaces");
+            }
+            if (currentChannel == null)
+            {
+                return NotFound();
+            }
 
-            return View(workspace);
+            return View(new WorkspaceViewModel
+            {
+                ID = workspace.ID,
+                Name = workspace.Name,
+                Channels = workspace.Channels,
+                WorkspaceMemberships = workspace.WorkspaceMemberships,
+                OwnerID = workspace.OwnerID,
+                InviteUserViewModel = new InviteUserViewModel { WorkspaceName = id, InviterName = _userManager.GetUserName(HttpContext.User) },
+                ChannelViewModel = new ChannelViewModel { Name = currentChannel.Name, General = currentChannel.General, ChannelMemberships = currentChannel.ChannelMemberships, ID = currentChannel.ID, OwnerID = currentChannel.OwnerID, Type = currentChannel.Type,
+                ChannelInviteViewModel = new ChannelInviteViewModel { WorkspaceName = workspace.Name, ChannelName = channel }},
+                CreateChannelViewModel = new CreateChannelViewModel { WorkspaceName = workspace.Name, OwnerID = _userManager.GetUserId(HttpContext.User) }
+            });
         }
 
         public IActionResult WorkspaceAccessDenied()
@@ -216,30 +190,6 @@ namespace Slack.Controllers
             return View();
         }
 
-        // GET: Workspaces/InviteUser/WorkspaceName
-        public async Task<IActionResult> InviteUser(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                return NotFound();
-            }
-            var workspace = await _context.Workspace.Include(ws => ws.WorkspaceMemberships).ThenInclude(wm => wm.ApplicationUser)
-                .SingleOrDefaultAsync(w => w.Name == id);
-            var workspaceMembership = await _context.WorkspaceMembership
-                .SingleOrDefaultAsync(m => m.WorkspaceID == workspace.ID && m.ApplicationUserID == _userManager.GetUserId(HttpContext.User));
-
-            if (workspace == null)
-            {
-                return NotFound();
-            }
-            if (workspaceMembership == null)
-            {
-                return RedirectToAction("WorkspaceAccessDenied", "Workspaces");
-            }
-
-            InviteUserViewModel model = new InviteUserViewModel { WorkspaceName = id, InviterName = _userManager.GetUserName(HttpContext.User) };
-            return View(model);
-        }
 
         // POST: Workspaces/InviteUser/WorkspaceName
         [HttpPost, ActionName("InviteUser")]
@@ -253,7 +203,9 @@ namespace Slack.Controllers
             {
                 if (wm.Workspace.Name.Equals(model.WorkspaceName) && wm.ApplicationUser.Email.Equals(model.EmailAddress))
                 {
-                    ModelState.AddModelError("EmailAddress", "That user is already a member of this workspace.");
+                   // TempData["InvitationResultMessage"] = "That user is already a member of this workspace.";
+                   // return RedirectToAction("Messages/" + model.WorkspaceName + "/general", "Workspaces");
+                   return Json("That user is already a member of this workspace.");
                 }
             }
 
@@ -287,11 +239,12 @@ namespace Slack.Controllers
                     _context.Add(new WorkspaceInvitation { WorkspaceName = model.WorkspaceName, UserEmailAddress = model.EmailAddress,
                         InvitationGUID = guid, StartDate = DateTime.Now });
                     await _context.SaveChangesAsync();
+                    //TempData["InvitationResultMessage"] = "The invitation has been sent.";
 
-                    return RedirectToAction("Messages/" + model.WorkspaceName, "Workspaces");
                 }
             }
-            return View(model);
+            //return RedirectToAction("Messages/" + model.WorkspaceName + "/general", "Workspaces");
+            return Json("The invitation has been sent.");
         }
     }
 }

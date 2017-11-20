@@ -9,7 +9,7 @@ namespace Slack.Models.WorkspaceViewModels
     public class InviteUserViewModel
     {
         [Required]
-        [Display(Name = "Email Adress")]
+        [Display(Name = "Email Address")]
         [EmailAddress]
         public string EmailAddress { get; set; }
 

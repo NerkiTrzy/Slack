@@ -24,7 +24,9 @@ namespace Slack.Data
         }
 
         public DbSet<Slack.Models.Workspace> Workspace { get; set; }
+        public DbSet<Slack.Models.Channel> Channel { get; set; }
         public DbSet<Slack.Models.WorkspaceMembership> WorkspaceMembership { get; set; }
+        public DbSet<Slack.Models.ChannelMembership> ChannelMembership { get; set; }
         public DbSet<Slack.Models.WorkspaceInvitation> WorkspaceInvitation { get; set; }
 
 

@@ -92,6 +92,12 @@ namespace Slack.Controllers
             invitation.CloseDate = DateTime.Now;
             _context.Update(invitation);
             _context.Add(new WorkspaceMembership { WorkspaceID = workspace.ID, JoinDate = DateTime.Now, ApplicationUserID = user.Id});
+           
+            //add user to general channel
+            var generalChannel = _context.Channel.Where(channel => channel.Workspace.ID == workspace.ID && channel.General == true).First();
+            _context.Add(new ChannelMembership { ChannelID = generalChannel.ID, JoinDate = DateTime.Now, ApplicationUserID = user.Id });
+
+
             await _context.SaveChangesAsync();
 
             return View();

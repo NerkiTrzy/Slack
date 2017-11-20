@@ -1,20 +1,47 @@
-﻿@model Slack.Models.Workspace
+﻿@model Slack.Models.WorkspaceViewModels.WorkspaceViewModel
 @{
     ViewData["Title"] = Model.Name;
 }
-<div>
-    <h4>Welcome to @Model.Name workspace</h4>
-    <hr />
-    ------workspace content------
-</div>
-<br />
-<div>
-    Users list:
-    @foreach (var item in Model.WorkspaceMemberships)
-    {
-        <p>@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</p>
-    }
+@inject UserManager<ApplicationUser> UserManager
+<div style="width:250px; height:100vh; border:1px solid black; float:left; margin-left:0px; padding-left:0px">
+    <div>
+        <h4>@Model.Name</h4>
+        <h4>@UserManager.GetUserName(User)</h4>
+        <hr />
+    </div>
+    <br />
+    <div id="channels">
+    Channels <span style="text-decoration: underline" onclick="showCreateChannelOverlay()">+</span> <br />
+        @Html.Partial("CreateChannel.cshtml", Model.CreateChannelViewModel)
+        @foreach (var item in Model.Channels)
+        {
+            foreach (var member in item.ChannelMemberships)
+            {
+                if (member.ApplicationUserID == UserManager.GetUserId(User))
+                {
+                    <a asp-area="" asp-controller="Workspaces" asp-action=@("Messages/" + Model.Name + "/" + item.Name)># @Html.DisplayFor(modelItem => item.Name)</a>
+                    <br />
+                    continue;
+                }
+            }
+        }
 
-    <p><a asp-action="InviteUser" asp-route-id="@Model.Name">Invite User</a></p>
-    
+    </div>
+    <br /><br /><br />
+    <div>
+        Users list:<br />
+        @foreach (var item in Model.WorkspaceMemberships)
+        {
+            @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)<br />
+        }
+
+        <p><span style="text-decoration: underline" onclick="showInviteUserOverlay()">Invite User</span></p>
+
+            @Html.Partial("InviteUser.cshtml", Model.InviteUserViewModel)
+</div>
+</div>
+<div style="height:100vh; margin-left: 250px; border:1px solid black;">
+    @Html.Partial("ChannelStatusBar.cshtml", Model.ChannelViewModel)
+    <hr />
+    @Html.Partial("Chat.cshtml")
 </div>

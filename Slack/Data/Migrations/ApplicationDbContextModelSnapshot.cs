@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Slack.Data;
+using Slack.Models;
 using System;
 
 namespace Slack.Data.Migrations
@@ -179,6 +180,48 @@ namespace Slack.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Slack.Models.Channel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("General");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("OwnerID");
+
+                    b.Property<int>("Type");
+
+                    b.Property<int?>("WorkspaceID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("WorkspaceID");
+
+                    b.ToTable("Channel");
+                });
+
+            modelBuilder.Entity("Slack.Models.ChannelMembership", b =>
+                {
+                    b.Property<int>("ChannelMembershipID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserID");
+
+                    b.Property<int>("ChannelID");
+
+                    b.Property<DateTime?>("JoinDate");
+
+                    b.HasKey("ChannelMembershipID");
+
+                    b.HasIndex("ApplicationUserID");
+
+                    b.HasIndex("ChannelID");
+
+                    b.ToTable("ChannelMembership");
+                });
+
             modelBuilder.Entity("Slack.Models.Workspace", b =>
                 {
                     b.Property<int>("ID")
@@ -277,6 +320,25 @@ namespace Slack.Data.Migrations
                     b.HasOne("Slack.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Slack.Models.Channel", b =>
+                {
+                    b.HasOne("Slack.Models.Workspace", "Workspace")
+                        .WithMany("Channels")
+                        .HasForeignKey("WorkspaceID");
+                });
+
+            modelBuilder.Entity("Slack.Models.ChannelMembership", b =>
+                {
+                    b.HasOne("Slack.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("ChannelMemberships")
+                        .HasForeignKey("ApplicationUserID");
+
+                    b.HasOne("Slack.Models.Channel", "Channel")
+                        .WithMany("ChannelMemberships")
+                        .HasForeignKey("ChannelID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

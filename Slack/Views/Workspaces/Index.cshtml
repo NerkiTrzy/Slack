@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "My Workspaces";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>My Workspaces</h2>
@@ -25,7 +26,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <a asp-action="Messages" asp-route-id="@item.Name">Enter</a>
+                <a asp-action="Messages" asp-route-id="@item.Name" asp-route-channel="general">Enter</a>
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>

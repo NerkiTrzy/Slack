@@ -1,27 +1,38 @@
 ﻿@model Slack.Models.WorkspaceViewModels.InviteUserViewModel
-@{
-    ViewData["Title"] = "Invite to " + Model.WorkspaceName;
-}
-<div>
-    <h4>Invite users to @Model.WorkspaceName workspace</h4>
-    <hr />
+<div id="inviteUserOverlay" class="overlay">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeInviteUserOverlay()">&times;</a>
+    <div class="overlayContent">
+        <h4>Invite user to @Model.WorkspaceName workspace</h4>
+        <form asp-controller="Workspaces" asp-action="InviteUser" data-ajax="true" data-ajax-method="POST" data-ajax-success="invitationResponseSuccess">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" id="emailInput" class="form-control" required />
+                <input asp-for="WorkspaceName" value=@Model.WorkspaceName type="hidden" />
+                <input asp-for="InviterName" value=@Model.InviterName type="hidden" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+            <div id="inviteUserResult"></div>
 
-    <form asp-action="InviteUser">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="EmailAddress" class="control-label"></label>
-            <input asp-for="EmailAddress" class="form-control" />
-            <input asp-for="WorkspaceName" value=@Model.WorkspaceName type="hidden"/>
-            <input asp-for="InviterName" value=@Model.InviterName type="hidden" />
-            <span asp-validation-for="EmailAddress" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="InviteUser" class="btn btn-default" />
-        </div>
-    </form>
+            <div class="form-group">
+                <input type="submit" value="Invite User" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
 
-</div>
-<br />
-<div>
-    <a asp-action="Messages" asp-route-id="@Model.WorkspaceName">Go Back</a>
-</div>
+<script>
+    var invitationResponseSuccess = function (response) {
+        $('#inviteUserResult').text(response);
+        $('#emailInput').val("");
+    }
+    function showInviteUserOverlay() {
+        $("#inviteUserOverlay").show();
+    }
+
+    function closeInviteUserOverlay() {
+        $("#inviteUserOverlay").hide();
+        $('#inviteUserResult').text("");
+        $('#emailInput').val("");
+    } 
+</script>

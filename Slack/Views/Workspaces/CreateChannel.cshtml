@@ -1,0 +1,46 @@
+﻿@model Slack.Models.WorkspaceViewModels.CreateChannelViewModel
+<div id="createChannelOverlay" class="overlay">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeCreateChannelOverlay()">&times;</a>
+    <div class="overlayContent">
+        <h4>Create a new channel</h4>
+        <form asp-controller="Channels" asp-action="CreateChannel" data-ajax="true" data-ajax-method="POST" data-ajax-success="createChannelResponseSuccess">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" id="name" class="form-control" required />
+                <select asp-for="Type" asp-items="Html.GetEnumSelectList<Channel.ChannelType>()">
+                </select>
+                    <input asp-for="WorkspaceName" value=@Model.WorkspaceName type="hidden"/>
+                    <input asp-for="OwnerID" value=@Model.OwnerID type="hidden" />
+</div>
+            <div id="createChannelResult"></div>
+
+            <div class="form-group">
+                <input type="submit" value="Create Channel" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var createChannelResponseSuccess = function (response) {
+        $('#name').val("");
+        if (response.result == 'Redirect') {
+            window.location = response.url;
+        }
+        else {
+            $('#createChannelResult').text(response.result);
+        }
+
+
+    }
+    function showCreateChannelOverlay() {
+        $("#createChannelOverlay").show();
+    }
+
+    function closeCreateChannelOverlay() {
+        $("#createChannelOverlay").hide();
+        $('#createChannelResult').text("");
+        $('#name').val("");
+    }
+</script>

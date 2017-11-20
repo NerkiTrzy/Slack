@@ -10,5 +10,6 @@ namespace Slack.Models
     public class ApplicationUser : IdentityUser
     {
         public ICollection<WorkspaceMembership> WorkspaceMemberships { get; set; }
+        public ICollection<ChannelMembership> ChannelMemberships { get; set; }
     }
 }
