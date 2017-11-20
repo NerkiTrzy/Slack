@@ -79,6 +79,12 @@ namespace Slack.Controllers
             return Json(new { result = "Redirect", url = Url.Action("Messages/" + model.WorkspaceName + "/" + channel.Name, "Workspaces") });
         }
 
+
+     /*   public async Task<IActionResult> GetAllMessages(string channel)
+        {
+            return Json("testmsg");
+        }
+        */
     }
 
 

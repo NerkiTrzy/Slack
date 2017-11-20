@@ -43,5 +43,5 @@
 <div style="height:100vh; margin-left: 250px; border:1px solid black;">
     @Html.Partial("ChannelStatusBar.cshtml", Model.ChannelViewModel)
     <hr />
-    @Html.Partial("Chat.cshtml")
+    @Html.Partial("Chat.cshtml", Model.ChannelViewModel)
 </div>

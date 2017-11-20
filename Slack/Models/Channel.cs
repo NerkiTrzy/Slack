@@ -14,7 +14,7 @@ namespace Slack.Models
         public ChannelType Type { get; set; }
         public Workspace Workspace { get; set; }
         public ICollection<ChannelMembership> ChannelMemberships { get; set; }
-
+        public ICollection<Message> Messages { get; set; }
 
         public enum ChannelType { Private, Public };
     }

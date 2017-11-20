@@ -1,10 +1,47 @@
-﻿<div class="chatContainer">
-    <div class="chatMessages"></div>
+﻿@model Slack.Models.WorkspaceViewModels.ChannelViewModel
+@inject UserManager<ApplicationUser> UserManager
+<div class="chatContainer">
+    <div class="chatMessages" id="message-list">
+        @foreach (var item in Model.Messages)
+        {
+
+            @Html.Raw(item.SendDate + ": ")
+            @Html.Raw(item.ApplicationUser.UserName + ": ")
+            @Html.Raw(item.MessageText)
+            <br />
+        }
+    </div>
     <div class="classBottom">
-        <form action="#" onsubmit="return false;" id="chat">
-            <input type="hidden" id="name" />
-            <input type="text" id="message_text" value='' placeholder="Message: #msg" />
-            <input type="submit" name="message_submit" value="Post" />
-        </form>
+        <input type="text" id="msgText" placeholder="Message:"/>
+        <input type="text" id="msgAuthor" value=@UserManager.GetUserName(User) hidden />
+        <input type="text" id="msgChannel" value=@Model.ID.ToString() hidden />
+        <button onclick="sendMessage()">send</button>
     </div>
 </div>
+<script>
+    var connection;
+    window.addEventListener("load", function () {
+        connection = new signalR.HubConnection('/chat');
+
+        connection.on('Send', data => {
+            $("#message-list").append(data);
+            $("#message-list").append("<br/>");
+        });
+
+        connection.start()
+            .then(() => {
+                msgChannel = $("#msgChannel").val();
+                connection.invoke('JoinGroup', msgChannel);
+            });
+
+    });
+
+    function sendMessage() {
+        msg = $("#msgText").val();
+        msgAuthor = $("#msgAuthor").val();
+        msgChannel = $("#msgChannel").val();
+        connection.invoke('Send', msg, msgAuthor, msgChannel);
+        $("#msgText").val("");
+    }
+
+</script>

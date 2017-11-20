@@ -150,7 +150,7 @@ namespace Slack.Controllers
                 .SingleOrDefaultAsync(w => w.Name == id);
             var workspaceMembership = await _context.WorkspaceMembership
                 .SingleOrDefaultAsync(m => m.WorkspaceID == workspace.ID && m.ApplicationUserID == _userManager.GetUserId(HttpContext.User));
-            var currentChannel = await _context.Channel.Include(c => c.ChannelMemberships).ThenInclude(chm => chm.ApplicationUser)
+            var currentChannel = await _context.Channel.Include(c => c.ChannelMemberships).ThenInclude(chm => chm.ApplicationUser).Include(c => c.Messages)
                 .SingleOrDefaultAsync(c => c.Name == channel && c.Workspace == workspace);
             var channelMembership = await _context.ChannelMembership.
                 SingleOrDefaultAsync(chm => chm.ChannelID == currentChannel.ID && chm.ApplicationUserID == _userManager.GetUserId(HttpContext.User));
@@ -179,7 +179,7 @@ namespace Slack.Controllers
                 WorkspaceMemberships = workspace.WorkspaceMemberships,
                 OwnerID = workspace.OwnerID,
                 InviteUserViewModel = new InviteUserViewModel { WorkspaceName = id, InviterName = _userManager.GetUserName(HttpContext.User) },
-                ChannelViewModel = new ChannelViewModel { Name = currentChannel.Name, General = currentChannel.General, ChannelMemberships = currentChannel.ChannelMemberships, ID = currentChannel.ID, OwnerID = currentChannel.OwnerID, Type = currentChannel.Type,
+                ChannelViewModel = new ChannelViewModel {Messages = currentChannel.Messages, Name = currentChannel.Name, General = currentChannel.General, ChannelMemberships = currentChannel.ChannelMemberships, ID = currentChannel.ID, OwnerID = currentChannel.OwnerID, Type = currentChannel.Type,
                 ChannelInviteViewModel = new ChannelInviteViewModel { WorkspaceName = workspace.Name, ChannelName = channel }},
                 CreateChannelViewModel = new CreateChannelViewModel { WorkspaceName = workspace.Name, OwnerID = _userManager.GetUserId(HttpContext.User) }
             });

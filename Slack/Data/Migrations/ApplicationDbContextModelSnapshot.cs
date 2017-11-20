@@ -3,10 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Slack.Data;
-using Slack.Models;
 using System;
 
 namespace Slack.Data.Migrations
@@ -222,6 +219,28 @@ namespace Slack.Data.Migrations
                     b.ToTable("ChannelMembership");
                 });
 
+            modelBuilder.Entity("Slack.Models.Message", b =>
+                {
+                    b.Property<int>("MessageID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserID");
+
+                    b.Property<int>("ChannelID");
+
+                    b.Property<string>("MessageText");
+
+                    b.Property<DateTime>("SendDate");
+
+                    b.HasKey("MessageID");
+
+                    b.HasIndex("ApplicationUserID");
+
+                    b.HasIndex("ChannelID");
+
+                    b.ToTable("Message");
+                });
+
             modelBuilder.Entity("Slack.Models.Workspace", b =>
                 {
                     b.Property<int>("ID")
@@ -338,6 +357,18 @@ namespace Slack.Data.Migrations
 
                     b.HasOne("Slack.Models.Channel", "Channel")
                         .WithMany("ChannelMemberships")
+                        .HasForeignKey("ChannelID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Slack.Models.Message", b =>
+                {
+                    b.HasOne("Slack.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserID");
+
+                    b.HasOne("Slack.Models.Channel", "Channel")
+                        .WithMany()
                         .HasForeignKey("ChannelID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

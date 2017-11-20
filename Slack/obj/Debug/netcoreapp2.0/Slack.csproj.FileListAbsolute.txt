@@ -17,8 +17,8 @@ C:\Users\M\Source\Repos\Slack3\Slack\bin\Debug\netcoreapp2.0\Slack.dll
 C:\Users\M\Source\Repos\Slack3\Slack\bin\Debug\netcoreapp2.0\Slack.pdb
 C:\Users\M\Source\Repos\Slack3\Slack\obj\Debug\netcoreapp2.0\Slack.csprojResolveAssemblyReference.cache
 C:\Users\M\Source\Repos\Slack3\Slack\obj\Debug\netcoreapp2.0\Slack.csproj.CoreCompileInputs.cache
-C:\Users\M\Source\Repos\Slack3\Slack\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
 C:\Users\M\Source\Repos\Slack3\Slack\obj\Debug\netcoreapp2.0\Slack.AssemblyInfoInputs.cache
 C:\Users\M\Source\Repos\Slack3\Slack\obj\Debug\netcoreapp2.0\Slack.AssemblyInfo.cs
 C:\Users\M\Source\Repos\Slack3\Slack\obj\Debug\netcoreapp2.0\Slack.dll
 C:\Users\M\Source\Repos\Slack3\Slack\obj\Debug\netcoreapp2.0\Slack.pdb
+C:\Users\M\Source\Repos\Slack3\Slack\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs

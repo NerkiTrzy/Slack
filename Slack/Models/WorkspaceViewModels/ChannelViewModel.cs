@@ -14,6 +14,7 @@ namespace Slack.Models.WorkspaceViewModels
         public Channel.ChannelType Type { get; set; }
         public Workspace Workspace { get; set; }
         public ICollection<ChannelMembership> ChannelMemberships { get; set; }
+        public ICollection<Message> Messages { get; set; }
 
         public ChannelInviteViewModel ChannelInviteViewModel { get; set; }
     }
