@@ -1,12 +1,14 @@
 ﻿@model Slack.Models.WorkspaceViewModels.ChannelViewModel
 @inject UserManager<ApplicationUser> UserManager
-<div class="chatContainer">
+<div class="chatContainer" id="chatMain">
     <div class="chatMessages" id="message-list">
         <h1></h1>
         @foreach (var group in Model.Messages.GroupBy(item => item.SendDate.Date))
         {
-            <div>
-                @Html.Raw(group.Key + ": ")
+            <div align="center" style="font-weight:bold; align-items: center">
+                <p>
+                    @Html.Raw(group.Key.Date.ToShortDateString() + "")
+                </p>
             </div>
             var tempUser = "";
             @foreach (var item in group)
@@ -14,7 +16,13 @@
                 
                 if (tempUser != item.ApplicationUser.UserName)
                 {
-                    @Html.Raw(item.ApplicationUser.UserName + ": " )
+                    <div>
+                        <span style="font-weight: bold;">@Html.Raw(item.ApplicationUser.UserName) </span>
+                        @Html.Raw( " " + item.SendDate.ToShortTimeString() + ": ")
+                        <br />
+                    </div>
+                    
+                       
                 }
 
                 tempUser = item.ApplicationUser.UserName;
@@ -31,7 +39,7 @@
         <input type="text" id="msgText" placeholder="Message:"/>
         <input type="text" id="msgAuthor" value=@UserManager.GetUserName(User) hidden />
         <input type="text" id="msgChannel" value=@Model.ID.ToString() hidden />
-        <button type="submit" onclick="sendMessage()">send</button>
+        <button id="send_button" type="submit" onclick="sendMessage()">send</button>
     </div>
 </div>
 <script>
@@ -58,6 +66,12 @@
         msgChannel = $("#msgChannel").val();
         connection.invoke('Send', msg, msgAuthor, msgChannel);
         $("#msgText").val("");
+    }
+
+    document.getElementById('chatMain').onkeypress = function (e) {
+        if (e.keyCode == 13) {
+            document.getElementById('send_button').click();
+        }
     }
 
 </script>
