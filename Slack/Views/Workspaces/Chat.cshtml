@@ -2,12 +2,28 @@
 @inject UserManager<ApplicationUser> UserManager
 <div class="chatContainer">
     <div class="chatMessages" id="message-list">
-        @foreach (var item in Model.Messages)
+        <h1></h1>
+        @foreach (var group in Model.Messages.GroupBy(item => item.SendDate.Date))
         {
+            <div>
+                @Html.Raw(group.Key + ": ")
+            </div>
+            var tempUser = "";
+            @foreach (var item in group)
+            {
+                
+                if (tempUser != item.ApplicationUser.UserName)
+                {
+                    @Html.Raw(item.ApplicationUser.UserName + ": " )
+                }
 
-            @Html.Raw(item.SendDate + ": ")
-            @Html.Raw(item.ApplicationUser.UserName + ": ")
-            @Html.Raw(item.MessageText)
+                tempUser = item.ApplicationUser.UserName;
+
+
+
+                @Html.Raw(item.MessageText)
+               <br />
+            }
             <br />
         }
     </div>
@@ -15,7 +31,7 @@
         <input type="text" id="msgText" placeholder="Message:"/>
         <input type="text" id="msgAuthor" value=@UserManager.GetUserName(User) hidden />
         <input type="text" id="msgChannel" value=@Model.ID.ToString() hidden />
-        <button onclick="sendMessage()">send</button>
+        <button type="submit" onclick="sendMessage()">send</button>
     </div>
 </div>
 <script>

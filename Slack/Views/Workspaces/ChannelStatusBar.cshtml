@@ -1,10 +1,12 @@
 ﻿@model Slack.Models.WorkspaceViewModels.ChannelViewModel
-<div>
-    <p>
-        Channel:@Model.Name
-        Users:@Model.ChannelMemberships.Count
-    <span style="text-decoration: underline" onclick="showInviteUserToChannelOverlay()">Invite others to this channel</span>
+<div >
+    <h4>
+        Channel: @Model.Name
+        <br />
+        Users: @Model.ChannelMemberships.Count
+        <br />
+    <span style="text-decoration: underline; " onclick="showInviteUserToChannelOverlay()">Invite others to this channel</span>
 
     @Html.Partial("InviteUserToChannel.cshtml", Model.ChannelInviteViewModel)
-    </p>
+    </h4>
 </div>

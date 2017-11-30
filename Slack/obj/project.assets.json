@@ -13569,7 +13569,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\M\\.nuget\\packages\\": {},
+    "C:\\Users\\Przemysław\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -13578,17 +13578,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\M\\Source\\Repos\\Slack3\\Slack\\Slack.csproj",
+      "projectUniqueName": "C:\\Test\\Slack\\Slack\\Slack.csproj",
       "projectName": "Slack",
-      "projectPath": "C:\\Users\\M\\Source\\Repos\\Slack3\\Slack\\Slack.csproj",
-      "packagesPath": "C:\\Users\\M\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\M\\Source\\Repos\\Slack3\\Slack\\obj\\",
+      "projectPath": "C:\\Test\\Slack\\Slack\\Slack.csproj",
+      "packagesPath": "C:\\Users\\Przemysław\\.nuget\\packages\\",
+      "outputPath": "C:\\Test\\Slack\\Slack\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\M\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Przemysław\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

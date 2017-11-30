@@ -3,7 +3,7 @@
     ViewData["Title"] = Model.Name;
 }
 @inject UserManager<ApplicationUser> UserManager
-<div style="width:250px; height:100vh; border:1px solid black; float:left; margin-left:0px; padding-left:0px">
+<div style="width:250px; height:100vh;  float:left; margin-left:3px; padding-left:3px; background-color: rgb(77, 57, 75); color: rgb(171, 155, 169); ">
     <div>
         <h4>@Model.Name</h4>
         <h4>@UserManager.GetUserName(User)</h4>
@@ -11,37 +11,83 @@
     </div>
     <br />
     <div id="channels">
-    Channels <span style="text-decoration: underline" onclick="showCreateChannelOverlay()">+</span> <br />
-        @Html.Partial("CreateChannel.cshtml", Model.CreateChannelViewModel)
-        @foreach (var item in Model.Channels)
-        {
-            foreach (var member in item.ChannelMemberships)
-            {
-                if (member.ApplicationUserID == UserManager.GetUserId(User))
-                {
-                    <a asp-area="" asp-controller="Workspaces" asp-action=@("Messages/" + Model.Name + "/" + item.Name)># @Html.DisplayFor(modelItem => item.Name)</a>
+        <table class="table table-hover">
+            <thead>
+                <tr>Channels: </tr>
+                <tr>
+                    <button type="button" class="btn btn-default btn-sm" style="align-items: flex-end; background-color: rgb(171, 155, 169); "  onclick="showCreateChannelOverlay()"><span class="glyphicon glyphicon-plus"></span>Add</button>
                     <br />
-                    continue;
-                }
-            }
-        }
+                    @Html.Partial("CreateChannel.cshtml", Model.CreateChannelViewModel)</tr>
+            </thead>
+            <tbody>
 
+                    @foreach (var item in Model.Channels)
+                    {
+                        foreach (var member in item.ChannelMemberships)
+                        {
+                            if (member.ApplicationUserID == UserManager.GetUserId(User))
+                            {
+                                if (item.Name == Model.ChannelViewModel.Name)
+                                {
+                                    <tr style="background-color: rgb(76, 150, 137); ">
+                                        <td>
+                                            
+                                            <a style="color: rgb(255, 255, 255);"  asp-area="" asp-controller="Workspaces" asp-action=@("Messages/" + Model.Name + "/" + item.Name)># @Html.DisplayFor(modelItem => item.Name)</a>
+                                            <br />
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>
+
+                                            <a style="color: rgb(171, 155, 169);" asp-area="" asp-controller="Workspaces" asp-action=@("Messages/" + Model.Name + "/" + item.Name)># @Html.DisplayFor(modelItem => item.Name)</a>
+                                            <br />
+
+                                        </td>
+                                    </tr>
+
+                                }
+
+                                continue;
+                            }
+                        }
+                    }
+            </tbody>
+        </table>
     </div>
     <br /><br /><br />
     <div>
-        Users list:<br />
-        @foreach (var item in Model.WorkspaceMemberships)
-        {
-            @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)<br />
-        }
+        <table class="table table-hover" >
+            <thead>
+                <tr>Channels: </tr>
+                <tr>
+                    Users list: 
+                    @Html.Partial("CreateChannel.cshtml", Model.CreateChannelViewModel)
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.WorkspaceMemberships)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
 
-        <p><span style="text-decoration: underline" onclick="showInviteUserOverlay()">Invite User</span></p>
+                <p><span style="text-decoration: underline" onclick="showInviteUserOverlay()">Invite User</span></p>
 
-            @Html.Partial("InviteUser.cshtml", Model.InviteUserViewModel)
+                @Html.Partial("InviteUser.cshtml", Model.InviteUserViewModel)
 </div>
 </div>
-<div style="height:100vh; margin-left: 250px; border:1px solid black;">
-    @Html.Partial("ChannelStatusBar.cshtml", Model.ChannelViewModel)
-    <hr />
+<div style="height:100vh; margin-left: 250px; border:1px solid black; background-color: rgb(255, 255, 255)">
+   <div style="color: rgb(76, 150, 137)">
+       @Html.Partial("ChannelStatusBar.cshtml", Model.ChannelViewModel)
+   </div> 
     @Html.Partial("Chat.cshtml", Model.ChannelViewModel)
 </div>
+
