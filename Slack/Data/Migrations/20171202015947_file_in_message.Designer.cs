@@ -12,9 +12,10 @@ using System;
 namespace Slack.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171202015947_file_in_message")]
+    partial class file_in_message
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,22 +223,6 @@ namespace Slack.Data.Migrations
                     b.ToTable("ChannelMembership");
                 });
 
-            modelBuilder.Entity("Slack.Models.File", b =>
-                {
-                    b.Property<int>("FileId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ContentType");
-
-                    b.Property<string>("FilePath");
-
-                    b.Property<string>("OriginalName");
-
-                    b.HasKey("FileId");
-
-                    b.ToTable("File");
-                });
-
             modelBuilder.Entity("Slack.Models.Message", b =>
                 {
                     b.Property<int>("MessageID")
@@ -247,7 +232,7 @@ namespace Slack.Data.Migrations
 
                     b.Property<int>("ChannelID");
 
-                    b.Property<int?>("FileId");
+                    b.Property<string>("File");
 
                     b.Property<string>("MessageText");
 
@@ -258,8 +243,6 @@ namespace Slack.Data.Migrations
                     b.HasIndex("ApplicationUserID");
 
                     b.HasIndex("ChannelID");
-
-                    b.HasIndex("FileId");
 
                     b.ToTable("Message");
                 });
@@ -394,10 +377,6 @@ namespace Slack.Data.Migrations
                         .WithMany("Messages")
                         .HasForeignKey("ChannelID")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Slack.Models.File", "File")
-                        .WithMany()
-                        .HasForeignKey("FileId");
                 });
 
             modelBuilder.Entity("Slack.Models.WorkspaceMembership", b =>

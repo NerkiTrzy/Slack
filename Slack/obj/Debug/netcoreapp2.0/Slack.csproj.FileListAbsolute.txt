@@ -34,3 +34,15 @@ C:\Test\Slack\Slack\obj\Debug\netcoreapp2.0\Slack.AssemblyInfoInputs.cache
 C:\Test\Slack\Slack\obj\Debug\netcoreapp2.0\Slack.AssemblyInfo.cs
 C:\Test\Slack\Slack\obj\Debug\netcoreapp2.0\Slack.dll
 C:\Test\Slack\Slack\obj\Debug\netcoreapp2.0\Slack.pdb
+C:\Dev\studia\s07\Slack\Slack\bin\Debug\netcoreapp2.0\Slack.deps.json
+C:\Dev\studia\s07\Slack\Slack\bin\Debug\netcoreapp2.0\Slack.runtimeconfig.json
+C:\Dev\studia\s07\Slack\Slack\bin\Debug\netcoreapp2.0\Slack.runtimeconfig.dev.json
+C:\Dev\studia\s07\Slack\Slack\bin\Debug\netcoreapp2.0\Slack.dll
+C:\Dev\studia\s07\Slack\Slack\bin\Debug\netcoreapp2.0\Slack.pdb
+C:\Dev\studia\s07\Slack\Slack\obj\Debug\netcoreapp2.0\Slack.csprojResolveAssemblyReference.cache
+C:\Dev\studia\s07\Slack\Slack\obj\Debug\netcoreapp2.0\Slack.csproj.CoreCompileInputs.cache
+C:\Dev\studia\s07\Slack\Slack\obj\Debug\netcoreapp2.0\Slack.AssemblyInfoInputs.cache
+C:\Dev\studia\s07\Slack\Slack\obj\Debug\netcoreapp2.0\Slack.AssemblyInfo.cs
+C:\Dev\studia\s07\Slack\Slack\obj\Debug\netcoreapp2.0\Slack.dll
+C:\Dev\studia\s07\Slack\Slack\obj\Debug\netcoreapp2.0\Slack.pdb
+C:\Dev\studia\s07\Slack\Slack\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs

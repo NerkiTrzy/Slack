@@ -12,6 +12,9 @@ using System.Security.Claims;
 using Slack.Models.WorkspaceViewModels;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Slack.Controllers
 {
@@ -19,11 +22,13 @@ namespace Slack.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHostingEnvironment _environment;
 
-        public WorkspacesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public WorkspacesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment environment)
         {
             _userManager = userManager;
             _context = context;
+            _environment = environment;
         }
 
         // GET: Workspaces
@@ -150,7 +155,7 @@ namespace Slack.Controllers
                 .SingleOrDefaultAsync(w => w.Name == id);
             var workspaceMembership = await _context.WorkspaceMembership
                 .SingleOrDefaultAsync(m => m.WorkspaceID == workspace.ID && m.ApplicationUserID == _userManager.GetUserId(HttpContext.User));
-            var currentChannel = await _context.Channel.Include(c => c.ChannelMemberships).ThenInclude(chm => chm.ApplicationUser).Include(c => c.Messages)
+            var currentChannel = await _context.Channel.Include(c => c.ChannelMemberships).ThenInclude(chm => chm.ApplicationUser).Include(c => c.Messages).ThenInclude(f => f.File)
                 .SingleOrDefaultAsync(c => c.Name == channel && c.Workspace == workspace);
             var channelMembership = await _context.ChannelMembership.
                 SingleOrDefaultAsync(chm => chm.ChannelID == currentChannel.ID && chm.ApplicationUserID == _userManager.GetUserId(HttpContext.User));
@@ -245,6 +250,43 @@ namespace Slack.Controllers
             }
             //return RedirectToAction("Messages/" + model.WorkspaceName + "/general", "Workspaces");
             return Json("The invitation has been sent.");
+        }
+
+        [HttpPost, ActionName("UploadFile")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadFile(String id, String channel, IFormFile file)
+        {
+            id = id.Replace(" ", "_");
+            channel = channel.Replace(" ", "_");
+
+            var username = _userManager.GetUserName(HttpContext.User);
+            var path = "uploads" + "/" + id + "/" + channel + "/" + username;
+            var extension = System.IO.Path.GetExtension(file.FileName);
+            var filename = Guid.NewGuid() + extension;
+            var filepath = "/" + path + "/" + filename;
+
+            var uploads = Path.Combine(_environment.WebRootPath, path);
+            EnsureDirectory(uploads);
+
+            if (file.Length > 0)
+            {
+                using (var fileStream = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                   
+                }
+            }
+            Models.File fileModel = new Models.File { FilePath = filepath, OriginalName = file.FileName, ContentType = file.ContentType };
+            return Json(fileModel);
+        }
+
+        void EnsureDirectory(string path)
+        {
+            string directoryName = Path.GetDirectoryName(path);
+            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
+            {
+                Directory.CreateDirectory(path);
+            }
         }
     }
 }

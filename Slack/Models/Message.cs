@@ -12,7 +12,7 @@ namespace Slack.Models
         public string ApplicationUserID { get; set; }
         public string MessageText { get; set; }
         public DateTime SendDate { get; set; }
-
+        public File File { get; set; }
 
         public Channel Channel { get; set; }
         public ApplicationUser ApplicationUser { get; set; }

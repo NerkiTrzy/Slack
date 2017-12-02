@@ -28,24 +28,52 @@
                 tempUser = item.ApplicationUser.UserName;
 
 
-
                 @Html.Raw(item.MessageText)
+                if (item.File != null && item.File.FilePath != "")
+                {
+                    var file = item.File;
+                    string fileType = file.ContentType;
+                    string[] ValidImageTypes = { "image/gif", "image/jpeg", "image/png" };
+
+                    if (ValidImageTypes.Contains(fileType))
+                    {
+                        <img src=@Html.Raw(item.File.FilePath) />
+                    }
+                    else
+                    {
+                        <a href=@Html.Raw(item.File.FilePath) download=@Html.Raw(item.File.OriginalName)>@Html.Raw(item.File.OriginalName)</a>
+                    }
+                }
                <br />
             }
-            <br />
+            
         }
     </div>
-    <div class="classBottom">
+    <div class="classBottom" ondragstart="dragStart(event)" ondragover="showUpload(event)">
         <input type="text" id="msgText" placeholder="Message:"/>
         <input type="text" id="msgAuthor" value=@UserManager.GetUserName(User) hidden />
         <input type="text" id="msgChannel" value=@Model.ID.ToString() hidden />
         <button id="send_button" type="submit" onclick="sendMessage()">send</button>
+
+        <div id="uploadspace" class="row" style="visibility: hidden">
+            <div class="col-md-9">
+                <div id="dropzone">
+                    <form asp-controller="Workspaces" class="dropzone needsclick dz-clickable" id="uploader"  asp-action=@("UploadFile/" + ViewData["Title"] + "/" + Model.Name) >
+                        <div class="dz-message needsclick">
+                            Drop files here or click to upload.<br>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <script>
+
     var connection;
     window.addEventListener("load", function () {
-        connection = new signalR.HubConnection('/chat');
+        connection = new signalR.HubConnection('/chat', { transport: signalR.TransportType.LongPolling });
 
         connection.on('Send', data => {
             $("#message-list").append(data);
@@ -58,13 +86,26 @@
                 connection.invoke('JoinGroup', msgChannel);
             });
 
+        connection.on('SendFile', data => {
+            var file = jQuery.parseJSON(data);
+            console.log(file.FilePath);
+            var fileType = file.ContentType;
+            var ValidImageTypes = ["image/gif", "image/jpeg", "image/png"];
+            if ($.inArray(fileType, ValidImageTypes) > 0) {
+                $("#message-list").append("<img src=" + file.FilePath + " />");
+            } else {
+                $("#message-list").append("<a href=" + file.FilePath + " download=" + file.OriginalName + ">" + file.OriginalName + "</a>");
+            }
+            $("#message-list").append("<br/>");
+        });
+
     });
 
     function sendMessage() {
         msg = $("#msgText").val();
         msgAuthor = $("#msgAuthor").val();
         msgChannel = $("#msgChannel").val();
-        connection.invoke('Send', msg, msgAuthor, msgChannel);
+        connection.invoke('Send', msg, msgAuthor, msgChannel, "");
         $("#msgText").val("");
     }
 
@@ -73,5 +114,33 @@
             document.getElementById('send_button').click();
         }
     }
+
+    function dragStart(event) {
+        event.dataTransfer.setData("Text", event.target.id);
+    }
+
+    function showUpload(event) {
+        event.preventDefault();
+        document.getElementById("uploadspace").style.visibility = "visible";
+    }
+
+    Dropzone.options.uploader = {
+        init: function () {
+            this.on("queuecomplete", function (file) {
+                //$("#uploadspace").delay(1000).fadeOut(300);
+                document.getElementById("uploadspace").style.visibility = "hidden";
+                this.removeAllFiles()
+            });
+
+            this.on('success', function () {
+                var args = Array.prototype.slice.call(arguments);
+                var filepath = args[1];
+                msg = $("#msgText").val();
+                msgAuthor = $("#msgAuthor").val();
+                msgChannel = $("#msgChannel").val();
+                connection.invoke('SendFile', msg, msgAuthor, msgChannel, filepath);
+            });
+        }
+    };
 
 </script>

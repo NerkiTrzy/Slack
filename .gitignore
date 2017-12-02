@@ -270,4 +270,6 @@ __pycache__/
 # Cake - Uncomment if you are using it
 # tools/
 
+/Slack/wwwroot/uploads/
+
 # End of https://www.gitignore.io/api/aspnetcore

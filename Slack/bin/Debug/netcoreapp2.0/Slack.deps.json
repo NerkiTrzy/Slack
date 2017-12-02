@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "ad75dbce18692ecd5fc135504f8ace1ac98d7176"
+    "signature": "3974d27f65251eeede42355e2d5b7a381f8d0cf3"
   },
   "compilationOptions": {
     "defines": [
@@ -28,7 +28,8 @@
           "Microsoft.AspNetCore.SignalR.Http": "0.0.1-alpha",
           "Microsoft.EntityFrameworkCore.Tools": "2.0.0",
           "Microsoft.NETCore.App": "2.0.0",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.0.0"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.0.0",
+          "dropzone": "4.2.0"
         },
         "runtime": {
           "Slack.dll": {}
@@ -37,6 +38,7 @@
           "Slack.dll": {}
         }
       },
+      "dropzone/4.2.0": {},
       "Libuv/1.10.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.0.0"
@@ -4454,6 +4456,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "dropzone/4.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DPgbwxoCOH4QIpZYZ0CNU0sAjP15LnkYhANItOoEjPJdeSzN2omYVqvjM6sM7F1EH+Ul4w6Fz8V8rgsdhAmKFg==",
+      "path": "dropzone/4.2.0",
+      "hashPath": "dropzone.4.2.0.nupkg.sha512"
     },
     "Libuv/1.10.0": {
       "type": "package",

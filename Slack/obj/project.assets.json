@@ -2,6 +2,9 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.0": {
+      "dropzone/4.2.0": {
+        "type": "package"
+      },
       "Libuv/1.10.0": {
         "type": "package",
         "dependencies": {
@@ -5268,6 +5271,23 @@
     }
   },
   "libraries": {
+    "dropzone/4.2.0": {
+      "sha512": "DPgbwxoCOH4QIpZYZ0CNU0sAjP15LnkYhANItOoEjPJdeSzN2omYVqvjM6sM7F1EH+Ul4w6Fz8V8rgsdhAmKFg==",
+      "type": "package",
+      "path": "dropzone/4.2.0",
+      "files": [
+        "content/Scripts/dropzone/basic.css",
+        "content/Scripts/dropzone/basic.min.css",
+        "content/Scripts/dropzone/dropzone-amd-module.js",
+        "content/Scripts/dropzone/dropzone-amd-module.min.js",
+        "content/Scripts/dropzone/dropzone.css",
+        "content/Scripts/dropzone/dropzone.js",
+        "content/Scripts/dropzone/dropzone.min.css",
+        "content/Scripts/dropzone/dropzone.min.js",
+        "dropzone.4.2.0.nupkg.sha512",
+        "dropzone.nuspec"
+      ]
+    },
     "Libuv/1.10.0": {
       "sha512": "GsCf4q+eyaI49rCPlgYxdxa1SQCysXFFdSJWdstrwxytg4+VPYLYrXD4AT2rjHVJ+UF7SSWX9CapWEYaU4ejVQ==",
       "type": "package",
@@ -13565,11 +13585,12 @@
       "Microsoft.AspNetCore.SignalR.Http >= 0.0.1-alpha",
       "Microsoft.EntityFrameworkCore.Tools >= 2.0.0",
       "Microsoft.NETCore.App >= 2.0.0",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.0.0"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.0.0",
+      "dropzone >= 4.2.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Przemysław\\.nuget\\packages\\": {},
+    "C:\\Users\\Admin\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -13578,17 +13599,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Test\\Slack\\Slack\\Slack.csproj",
+      "projectUniqueName": "C:\\Dev\\studia\\s07\\Slack\\Slack\\Slack.csproj",
       "projectName": "Slack",
-      "projectPath": "C:\\Test\\Slack\\Slack\\Slack.csproj",
-      "packagesPath": "C:\\Users\\Przemysław\\.nuget\\packages\\",
-      "outputPath": "C:\\Test\\Slack\\Slack\\obj\\",
+      "projectPath": "C:\\Dev\\studia\\s07\\Slack\\Slack\\Slack.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Dev\\studia\\s07\\Slack\\Slack\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Przemysław\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -13596,7 +13617,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://www.nuget.org/api/v2/": {}
       },
       "frameworks": {
         "netcoreapp2.0": {
@@ -13626,6 +13647,10 @@
             "target": "Package",
             "version": "2.0.0",
             "autoReferenced": true
+          },
+          "dropzone": {
+            "target": "Package",
+            "version": "4.2.0"
           },
           "Microsoft.AspNetCore.All": {
             "target": "Package",
