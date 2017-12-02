@@ -282,8 +282,7 @@ namespace Slack.Controllers
 
         void EnsureDirectory(string path)
         {
-            string directoryName = Path.GetDirectoryName(path);
-            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
+            if ((path.Length > 0) && (!Directory.Exists(path)))
             {
                 Directory.CreateDirectory(path);
             }
