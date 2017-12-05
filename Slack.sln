@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slack", "Slack\Slack.csproj", "{AC67091B-8E2F-454D-A3C6-73C5176FA70A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Slack", "Slack\Slack.csproj", "{AC67091B-8E2F-454D-A3C6-73C5176FA70A}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C287EF93-B89A-4DB5-BB20-E6AAD3C9A9A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{AC67091B-8E2F-454D-A3C6-73C5176FA70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC67091B-8E2F-454D-A3C6-73C5176FA70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC67091B-8E2F-454D-A3C6-73C5176FA70A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C287EF93-B89A-4DB5-BB20-E6AAD3C9A9A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C287EF93-B89A-4DB5-BB20-E6AAD3C9A9A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C287EF93-B89A-4DB5-BB20-E6AAD3C9A9A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C287EF93-B89A-4DB5-BB20-E6AAD3C9A9A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

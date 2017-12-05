@@ -1,0 +1,9 @@
+version: '3'
+services:
+  slack:
+    build:
+      context: ./Slack
+      dockerfile: Dockerfile
+    ports:
+     - "7630:80"
+    image: user/slack${TAG}
