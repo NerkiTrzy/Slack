@@ -81,7 +81,7 @@
             $("#message-list").append("<br/>");
             var elem = document.getElementById('message-list');
             elem.scrollTop = elem.scrollHeight;
-            @* $('#message-list').load(window.location.href + ' #message-list'); *@
+             $('#message-list').load(window.location.href + ' #message-list');
         });
 
         connection.start()
@@ -99,10 +99,16 @@
             var ValidImageTypes = ["image/gif", "image/jpeg", "image/png"];
             if ($.inArray(fileType, ValidImageTypes) > 0) {
                 $("#message-list").append("<img src=" + file.FilePath + " />");
+                var elem = document.getElementById('message-list');
+                elem.scrollTop = elem.scrollHeight;
             } else {
                 $("#message-list").append("<a href=" + file.FilePath + " download=" + file.OriginalName + ">" + file.OriginalName + "</a>");
+                var elem = document.getElementById('message-list');
+                elem.scrollTop = elem.scrollHeight;
             }
             $("#message-list").append("<br/>");
+            var elem = document.getElementById('message-list');
+            elem.scrollTop = elem.scrollHeight;
         });
 
     });
@@ -146,6 +152,8 @@
                 msgChannel = $("#msgChannel").val();
                 connection.invoke('SendFile', msg, msgAuthor, msgChannel, filepath);
             });
+            var elem = document.getElementById('message-list');
+            elem.scrollTop = elem.scrollHeight;
         }
     };
 
