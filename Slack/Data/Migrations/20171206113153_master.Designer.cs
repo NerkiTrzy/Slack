@@ -6,20 +6,21 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Slack.Data;
+using Slack.Models;
 using System;
 
 namespace Slack.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20171102080427_workspaceInvitations")]
-    partial class workspaceInvitations
+    [Migration("20171206113153_master")]
+    partial class master
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
+                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -39,8 +40,7 @@ namespace Slack.Data.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -174,10 +174,93 @@ namespace Slack.Data.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Slack.Models.Channel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("General");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("OwnerID");
+
+                    b.Property<int>("Type");
+
+                    b.Property<int?>("WorkspaceID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("WorkspaceID");
+
+                    b.ToTable("Channel");
+                });
+
+            modelBuilder.Entity("Slack.Models.ChannelMembership", b =>
+                {
+                    b.Property<int>("ChannelMembershipID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserID");
+
+                    b.Property<int>("ChannelID");
+
+                    b.Property<DateTime?>("JoinDate");
+
+                    b.HasKey("ChannelMembershipID");
+
+                    b.HasIndex("ApplicationUserID");
+
+                    b.HasIndex("ChannelID");
+
+                    b.ToTable("ChannelMembership");
+                });
+
+            modelBuilder.Entity("Slack.Models.File", b =>
+                {
+                    b.Property<int>("FileId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ContentType");
+
+                    b.Property<string>("FilePath");
+
+                    b.Property<string>("OriginalName");
+
+                    b.HasKey("FileId");
+
+                    b.ToTable("File");
+                });
+
+            modelBuilder.Entity("Slack.Models.Message", b =>
+                {
+                    b.Property<int>("MessageID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserID");
+
+                    b.Property<int>("ChannelID");
+
+                    b.Property<int?>("FileId");
+
+                    b.Property<string>("MessageText");
+
+                    b.Property<DateTime>("SendDate");
+
+                    b.HasKey("MessageID");
+
+                    b.HasIndex("ApplicationUserID");
+
+                    b.HasIndex("ChannelID");
+
+                    b.HasIndex("FileId");
+
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("Slack.Models.Workspace", b =>
@@ -279,6 +362,41 @@ namespace Slack.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Slack.Models.Channel", b =>
+                {
+                    b.HasOne("Slack.Models.Workspace", "Workspace")
+                        .WithMany("Channels")
+                        .HasForeignKey("WorkspaceID");
+                });
+
+            modelBuilder.Entity("Slack.Models.ChannelMembership", b =>
+                {
+                    b.HasOne("Slack.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("ChannelMemberships")
+                        .HasForeignKey("ApplicationUserID");
+
+                    b.HasOne("Slack.Models.Channel", "Channel")
+                        .WithMany("ChannelMemberships")
+                        .HasForeignKey("ChannelID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Slack.Models.Message", b =>
+                {
+                    b.HasOne("Slack.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserID");
+
+                    b.HasOne("Slack.Models.Channel", "Channel")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChannelID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Slack.Models.File", "File")
+                        .WithMany()
+                        .HasForeignKey("FileId");
                 });
 
             modelBuilder.Entity("Slack.Models.WorkspaceMembership", b =>

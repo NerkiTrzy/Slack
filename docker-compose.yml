@@ -7,3 +7,14 @@ services:
     ports:
      - "7630:80"
     image: user/slack${TAG}
+    depends_on:
+      - postgres
+    links:
+      - postgres
+  postgres:
+      image: postgres:9.6-alpine
+      container_name: postgres
+      environment:
+          - POSTGRES_USER=admin
+          - POSTGRES_PASSWORD=password
+          - POSTGRES_DB=dbname
