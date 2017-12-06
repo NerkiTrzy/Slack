@@ -77,8 +77,8 @@
         connection = new signalR.HubConnection('/chat', { transport: signalR.TransportType.LongPolling });
 
         connection.on('Send', data => {
-            $("#message-list").append(data);
-            $("#message-list").append("<br/>");
+            @* $("#message-list").append(data);
+            $("#message-list").append("<br/>"); *@
             var elem = document.getElementById('message-list');
             elem.scrollTop = elem.scrollHeight;
              $('#message-list').load(window.location.href + ' #message-list');
