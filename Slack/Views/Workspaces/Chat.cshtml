@@ -79,9 +79,9 @@
         connection.on('Send', data => {
             @* $("#message-list").append(data);
             $("#message-list").append("<br/>"); *@
+            $('#message-list').load(window.location.href + ' #message-list');
             var elem = document.getElementById('message-list');
             elem.scrollTop = elem.scrollHeight;
-             $('#message-list').load(window.location.href + ' #message-list');
         });
 
         connection.start()

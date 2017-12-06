@@ -7,7 +7,7 @@
     <div>
         <h4>@Model.Name</h4>
         <h4>@UserManager.GetUserName(User)</h4>
-        <a style="color: rgb(76, 150, 137);" asp-area="" asp-controller="Workspaces" asp-action=@("/")>My workspaces</a>
+        <a style="color: rgb(76, 150, 137);" asp-area="" asp-controller="Workspaces" asp-action=@("")>My workspaces</a>
         <hr />
     </div>
     <br />
@@ -31,9 +31,9 @@
                                 if (item.Name == Model.ChannelViewModel.Name)
                                 {
                                     <tr style="background-color: rgb(76, 150, 137); ">
-                                        <td>
-                                            
-                                            <a style="color: rgb(255, 255, 255);"  asp-area="" asp-controller="Workspaces" asp-action=@("Messages/" + Model.Name + "/" + item.Name)># @Html.DisplayFor(modelItem => item.Name)</a>
+                                        <td style="color: rgb(255, 255, 255);">
+                                            @Html.ActionLink("#" + item.Name, "Messages", "Workspaces", new { id = Model.Name, channel = item.Name }, new { @style = "color: rgb(255, 255, 255);" })
+     
                                             <br />
                                         </td>
                                     </tr>
@@ -41,9 +41,9 @@
                                 else
                                 {
                                     <tr>
-                                        <td>
+                                        <td >
+                                            @Html.ActionLink("#" + item.Name, "Messages", "Workspaces", new { id = Model.Name, channel = item.Name }, new { @style="color: rgb(171, 155, 169);" })
 
-                                            <a style="color: rgb(171, 155, 169);" asp-area="" asp-controller="Workspaces" asp-action=@("Messages/" + Model.Name + "/" + item.Name)># @Html.DisplayFor(modelItem => item.Name)</a>
                                             <br />
 
                                         </td>
