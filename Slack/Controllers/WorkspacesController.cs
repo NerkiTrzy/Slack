@@ -204,6 +204,31 @@ namespace Slack.Controllers
             var workspaces = from w in _context.Workspace
                              select w;
             List<WorkspaceMembership> allMemberships = await _context.WorkspaceMembership.Include(w => w.Workspace).Include(u => u.ApplicationUser).ToListAsync();
+
+            var workspace = workspaces.First();
+
+
+            var users = from u in _context.Users
+                        select u;
+            var user = (ApplicationUser)users.Where(u => u.Email.Equals(model.EmailAddress)).First();
+
+            _context.Add(new WorkspaceMembership { WorkspaceID = workspace.ID, JoinDate = DateTime.Now, ApplicationUserID = user.Id });
+
+            //add user to general channel
+            var generalChannel = _context.Channel.Where(channel => channel.Workspace.ID == workspace.ID && channel.General == true).First();
+            _context.Add(new ChannelMembership { ChannelID = generalChannel.ID, JoinDate = DateTime.Now, ApplicationUserID = user.Id });
+
+
+            await _context.SaveChangesAsync();
+
+
+
+
+
+
+
+
+
             foreach (WorkspaceMembership wm in allMemberships)
             {
                 if (wm.Workspace.Name.Equals(model.WorkspaceName) && wm.ApplicationUser.Email.Equals(model.EmailAddress))
@@ -226,17 +251,29 @@ namespace Slack.Controllers
                 message.Body = $"<p>{model.InviterName} has invited you to join {model.WorkspaceName} on SLACK.</p>";
                 message.Body += $"<a href=\"https://localhost:44320/WorkspaceInvitation?id={guid}\">https://localhost:44320/WorkspaceInvitation?id={guid}</a>";
                 message.IsBodyHtml = true;
+                
+                Console.WriteLine("\r\n\r\n\n\n\n\n\n\n\n" + message.Body + "\r\n\r\n\n\n\n\n\n\n\n");
 
-                using (var smtp = new SmtpClient())
+                _context.Add(new WorkspaceInvitation
+                {
+                    WorkspaceName = model.WorkspaceName,
+                    UserEmailAddress = model.EmailAddress,
+                    InvitationGUID = guid,
+                    StartDate = DateTime.Now
+                });
+                await _context.SaveChangesAsync();
+
+                /*
+                using (var smtp = new SmtpClient())1
                 {
                     var credential = new NetworkCredential
                     {
-                        UserName = "411d49481d15a7",
-                        Password = "a57d38c47b205a"
+                        UserName = "adamzeslacka",
+                        Password = "Adam1234"
                     };
                     smtp.Credentials = credential;
-                    smtp.Host = "smtp.mailtrap.io";
-                    smtp.Port = 25;
+                    smtp.Host = "smtp.wp.pl";
+                    smtp.Port = 465;
                     smtp.EnableSsl = true;
                     await smtp.SendMailAsync(message);
 
@@ -247,6 +284,7 @@ namespace Slack.Controllers
                     //TempData["InvitationResultMessage"] = "The invitation has been sent.";
 
                 }
+                */
             }
             //return RedirectToAction("Messages/" + model.WorkspaceName + "/general", "Workspaces");
             return Json("The invitation has been sent.");
